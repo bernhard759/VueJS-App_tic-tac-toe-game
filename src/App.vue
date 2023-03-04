@@ -4,7 +4,7 @@ import { ref } from "vue"; // reactive state
 
 // Data
 let square = ref([]); // Init square state as empty array
-for (let i = 0; i <= 9; i++) {
+for (let i = 0; i < 9; i++) {
   square.value.push("");
 };
 let gameOver = ref(false);
@@ -18,13 +18,13 @@ let winner;
 // Functions
 function clickedSquare(n) {
   //console.log(n)
-  if (square.value[n] !== "") return;
-  square.value[n] = currentTurn;
+  if (square.value[n-1] !== "") return;
+  square.value[n-1] = currentTurn;
   // Do we have a winner?
-  isWinner();
+  isWinner(square.value);
   if (gameOver.value) return;
   // Is the game a draw?
-  isDraw();
+  isDraw(square.value);
   // Switch turns
   currentTurn =
     TURNS[Object.keys(TURNS).find((key) => TURNS[key] !== currentTurn)];
@@ -32,26 +32,27 @@ function clickedSquare(n) {
 }
 
 // Check for a winner
-function isWinner() {
+function isWinner(squares) {
   const possibleLines = [
-    [1, 2, 3],
-    [4, 5, 6],
-    [7, 8, 9],
+    [0, 1, 2],
+    [3, 4, 5],
+    [6, 7, 8],
+    [0, 3, 6],
     [1, 4, 7],
     [2, 5, 8],
-    [3, 6, 9],
-    [1, 5, 9],
-    [3, 5, 7],
+    [0, 4, 8],
+    [2, 4, 6],
   ];
   possibleLines.forEach((line) => {
     const [a, b, c] = line;
     if (
-      square.value[a] !== "" &&
-      square.value[a] === square.value[b] &&
-      square.value[a] === square.value[c]
+      squares[a] !== "" &&
+      squares[a] === squares[b] &&
+      squares[a] === squares[c]
     ) {
+      //console.log(a, squares[a], b, squares[b], c, squares[c])
       winner = Object.keys(TURNS).find((key) => TURNS[key] === currentTurn);
-      console.log("winner", winner);
+      //console.log("winner", winner);
       gameOver.value = true;
       gameMsg.value = true;
       setTimeout(() => gameMsg.value = false, 2000)
@@ -60,13 +61,11 @@ function isWinner() {
 }
 
 // Do we have a draw?
-function isDraw() {
-  let draw = true;
-  square.value.forEach((s) => {
-    if (s === "") draw = false;
-  });
+function isDraw(squares) {
+  console.log(squares);
+  let draw = squares.filter(s => s === "").length === 0;
   gameOver.value = draw;
-  if (gameOver.value) {
+  if (draw) {
     gameMsg.value = true;
     setTimeout(() => gameMsg.value = false, 2000);
   }
@@ -88,8 +87,8 @@ function startGame() {
     <!-- Squares -->
     <div class="square" v-for="n in 9" v-bind:key="n" @click="clickedSquare(n)">
       <!-- SVG icons -->
-      <ph-x v-if="square[n] === 'X'" :size='32' color='white' />
-      <ph-circle v-if="square[n] === 'O'" :size='32' color='white' />
+      <ph-x v-if="square[n-1] === 'X'" :size='32' color='white' />
+      <ph-circle v-if="square[n-1] === 'O'" :size='32' color='white' />
     </div>
   </div>
   <!-- Gameover div -->
