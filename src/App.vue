@@ -108,8 +108,6 @@ function startGame() {
 
 <style scoped>
 #board {
-  background-color: #eee;
-  padding: 1em;
   width: 50vmin;
   aspect-ratio: 1;
   margin: 0 auto;
@@ -124,7 +122,6 @@ function startGame() {
 }
 
 .gameover {
-  background-color: #eee;
   height: 50vmin;
   width: 100%;
   aspect-ratio: 1;
@@ -165,8 +162,8 @@ function startGame() {
   justify-content: center;
   align-items: center;
   padding: 1em;
-  background-color: rgba(0, 0, 0, 0.5);
-  color: white;
+  background-color: var(--bg-color2);
+  color: var(--color2);
   font-weight: bold;
 }
 </style>
