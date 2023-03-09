@@ -5,15 +5,9 @@ import Board from './components/Board.vue';
 
 <template>
   <h1>Tic tac toe game</h1>
-  <p class="subheader">Built with VueJS</p>
+  <h2>Built with VueJS</h2>
   <!-- Board -->
   <Board></Board>
 </template>
 
 
-<style scoped>
-.subheader {
-  font-size: 1.25rem;
-  margin-bottom: 1em;
-}
-</style>
